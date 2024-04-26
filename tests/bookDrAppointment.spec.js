@@ -3,20 +3,14 @@ const { test, expect } = require("@playwright/test");
 test("book appointment", async ({ page }) => {
   await page.goto("https://www.cvs.com/");
 
-  await Promise.all([
-    page.click("#sec4-link5"),
-    page.waitForNavigation()
-  ]);
+  await Promise.all([page.click("#sec4-link5"), page.waitForNavigation()]);
 
-  await Promise.all([
-    page.click("#inperson"),
-    page.waitForNavigation()
-  ]);
+  await Promise.all([page.click("#inperson"), page.waitForNavigation()]);
 
   await page.fill("input#location.input", "07305");
   await Promise.all([
     page.click("a#find-care-btn.find-button"),
-    page.waitForNavigation()
+    // page.waitForNavigation(),
   ]);
 
   await page.fill("#patientInfoDobNew_month", "02");
@@ -25,23 +19,20 @@ test("book appointment", async ({ page }) => {
 
   await Promise.all([
     page.click('button:has-text("Next")'),
-    page.waitForNavigation()
+    page.waitForSelector(".neb-loading-spinner", { state: "hidden" }),
   ]);
 
-  await Promise.all([
-    page.click('//label[@for="date_4-25"]'),
-    page.waitForSelector('//span[@class="short" and text()="12:50 PM"]')
-  ]);
+  const selectDate = ".button-div:nth-child(2)";
+  await page.waitForSelector(selectDate);
+  await page.click(selectDate);
 
-  await Promise.all([
-    page.click('//label[@for="date_4-25"]'),
-    page.waitForNavigation()
-  ]);
+  const secondTimeSelector = '.available-times-container .button-div:nth-child(2)';
+  await page.click(secondTimeSelector);
 
   const continueBtn = page.locator('button:has-text("Continue")');
   await Promise.all([
     continueBtn.click(),
-    page.waitForNavigation({ timeout: 60000 })
+    page.waitForNavigation({ timeout: 60000 }),
   ]);
 
   await page.fill("#patientInfoFirstName", "James");
@@ -56,27 +47,27 @@ test("book appointment", async ({ page }) => {
   await page.fill("#patientInfoPhoneNumber", "4123451327");
 
   const continueBtns = page.locator('button:has-text("Continue")');
+  console.log(continueBtns)
   await Promise.all([
-    continueBtns.waitForElementState('visible'),
     continueBtns.click(),
-    page.waitForNavigation()
+    page.waitForNavigation(),
   ]);
 
   await page.waitForURL(
     "https://www.cvs.com/health-services/scheduling/review?lob=mc&flow=core&rfvMappingId=172&rfvId=4&zipcode=07305"
   );
 
-  const label = await page.locator('label.ps-label[for="ps-radio-688735"]');
-  await label.click();
-  const button = await page.locator(
+ 
+  const confirmVisitBtn = await page.locator(
     'button.ps-button.ps-button-solid:has-text("Confirm visit")'
   );
   await Promise.all([
-    button.waitForElementState('visible'),
-    button.click(),
-    page.waitForTimeout(5000)
+    confirmVisitBtn.click(),
+    page.waitForTimeout(5000),
   ]);
 
-  const confirmationMessage = await page.locator('.confirmation-message');
-  await expect(confirmationMessage).toHaveText('Your appointment has been booked successfully.');
+  const confirmationMessage = await page.locator("#confirmation-heading");
+  await expect(confirmationMessage).toHaveText(
+    " Your visit is scheduled "
+  );
 });
