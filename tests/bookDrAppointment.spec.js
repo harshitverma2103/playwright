@@ -44,7 +44,7 @@ test("book appointment", async ({ page }) => {
     page.waitForNavigation({ timeout: 60000 })
   ]);
 
-  await page.fill("#patientInfoFirstName", "James"); // Corrected typo: "patientInfoFiyrstName" to "patientInfoFirstName"
+  await page.fill("#patientInfoFirstName", "James");
   await page.fill("#patientInfoLastName", "Clear");
   await page.fill("#patientInfoAddressLine1", "1234 Main Street");
   await page.fill("#patientInfoCity", "Clifton");
@@ -55,7 +55,6 @@ test("book appointment", async ({ page }) => {
   await page.fill("#patientInfoEmail", "harshitv8445@gmail.com");
   await page.fill("#patientInfoPhoneNumber", "4123451327");
 
-  // Clicking "Continue" again and waiting for navigation to complete
   const continueBtns = page.locator('button:has-text("Continue")');
   await Promise.all([
     continueBtns.waitForElementState('visible'),
