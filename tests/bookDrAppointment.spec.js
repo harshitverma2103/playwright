@@ -57,7 +57,7 @@ test("book appointment", async ({ page }) => {
     "https://www.cvs.com/health-services/scheduling/review?lob=mc&flow=core&rfvMappingId=172&rfvId=4&zipcode=07305"
   );
 
- 
+ await page.click("#reviewAddVaccineToVisit_1");
   const confirmVisitBtn = await page.locator(
     'button.ps-button.ps-button-solid:has-text("Confirm visit")'
   );
