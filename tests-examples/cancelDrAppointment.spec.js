@@ -10,13 +10,18 @@ async function fillConfirmationCode(page, code) {
     await page.fill("#confirmationCode", code);
 }
 
-const confirmationCode = "";
+const confirmationCode = "ng9nc7m";
 
 test("cancel appointment", async ({ page }) => {
     await page.goto("https://www.cvs.com/");
     await page.click("#sec3-link4");
     await page.waitForEvent("domcontentloaded");
     await page.click("#reschedule-cancel-link");
+    // const locator = await page.waitForSelector("#invitationApp");
+    // if(locator.isVisible){
+
+    // }
+    await page.waitForLoadState("domcontentloaded")
     await fillConfirmationCode(page, confirmationCode);
     await page.click("#optLastName");
     await page.fill("#lastName", "clear");
