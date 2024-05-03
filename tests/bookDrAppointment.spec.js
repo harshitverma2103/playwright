@@ -34,7 +34,7 @@ test("book appointment", async ({ page }) => {
     continueBtn.click(),
     page.waitForNavigation({ timeout: 60000 }),
   ]);
-
+  page.waitForLoadState("domcontentloaded")
   await page.fill("#patientInfoFirstName", "James");
   await page.fill("#patientInfoLastName", "Clear");
   await page.fill("#patientInfoAddressLine1", "1234 Main Street");
@@ -50,8 +50,8 @@ test("book appointment", async ({ page }) => {
   console.log(continueBtns)
   await Promise.all([
     continueBtns.click(),
-    page.waitForNavigation(),
   ]);
+  page.waitForNavigation(),
 
   await page.waitForURL(
     "https://www.cvs.com/health-services/scheduling/review?lob=mc&flow=core&rfvMappingId=172&rfvId=4&zipcode=07305"
