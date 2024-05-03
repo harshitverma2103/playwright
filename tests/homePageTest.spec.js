@@ -8,7 +8,7 @@ test("Home Page", async ({ page }) => {
 
   await page.click(".cta-deals-banner-text.pulse-text-black.pulse-link");
   await page.waitForEvent("domcontentloaded");
-  expect(page.url()).itoBe(
+  expect(page.url()).toBe(
     "https://www.cvs.com/extracare/home/?icid=shop-home-extracare-rebrand"
   );
 });
